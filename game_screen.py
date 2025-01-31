@@ -1,5 +1,6 @@
 from tkinter import *
 import random
+import sys
 
 # File paths
 easy_words = "easy.txt"
@@ -15,7 +16,13 @@ garie=False
 pressed_keys = set()
 
 logs = Tk()
-logs.geometry("600x600")
+screen_width = logs.winfo_screenwidth()
+screen_height = logs.winfo_screenheight()
+
+if sys.platform == "darwin":  # macOS
+    logs.geometry("600x600")
+elif sys.platform == "win32":  # Windows
+    logs.geometry(f"{int(screen_width * 0.6)}x{int(screen_height * 0.8)}")
 logs.title("Karātavas")
 logs.configure(bg='gray')
 
@@ -72,7 +79,12 @@ def create_lines():
 
 def switch_game_screen():
     global trys
-    logs.geometry("1000x800")
+    
+
+    if sys.platform == "darwin":  # macOS
+        logs.geometry("1000x800")
+    elif sys.platform == "win32":  # Windows
+        logs.geometry(f"{int(screen_width * 0.6)}x{int(screen_height * 0.8)}")
     trys = 0
     draw_base()
     create_lines()
@@ -85,7 +97,12 @@ def switch_difficulty_screen():
         widget.destroy()
     for widget in lose_frame.winfo_children():
         widget.destroy()
-    logs.geometry("600x600")
+
+
+    if sys.platform == "darwin":  # macOS
+        logs.geometry("600x600")
+    elif sys.platform == "win32":  # Windows
+        logs.geometry(f"{int(screen_width * 0.6)}x{int(screen_height * 0.8)}")
     start_frame.pack_forget()
     difficulty_select_frame.pack(fill="both", expand=True)
 
@@ -152,12 +169,12 @@ def create_keyboard(frame):
     for row_index, row in enumerate(keys):
         for col_index, letter in enumerate(row):
             btn = Button(frame, text=letter, font=("Arial", 14, "bold"), width=4, height=2,
-                         bg="black", fg="black", activebackground="gray", activeforeground="white")
+                         bg="white", fg="black", activebackground="gray", activeforeground="white")
             btn.config(command=lambda l=letter, b=btn: letter_pressed(l, b))
             if letter.lower() in pressed_keys:  
                 btn.config(state=DISABLED)
             btn.grid(row=row_index, column=col_index, padx=3, pady=5)
-    long_letters=Button(frame, text="Garie Burti", font=("Arial", 14, "bold"), width=6, height=2,command=garie_burti).grid(row=2, column=7)
+    long_letters=Button(frame, text="Garie Burti", font=("Arial", 14, "bold"), width=8, height=2,command=garie_burti).grid(row=2, column=7,columnspan=2)
 
 #Start screen widgets
 Stat_Label = Label(start_frame, text="★ Karātavas ★", font=("Times New Roman", 50, "bold italic"), fg='gold', bg='black')
