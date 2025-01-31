@@ -60,7 +60,7 @@ def difficulty_select(x):
 
 def read_words():
     file_path = {1: easy_words, 2: normal_words, 3: hard_words}.get(difficulty, easy_words)
-    with open(file_path, 'r') as file:
+    with open(file_path, 'r',encoding='utf-8') as file:
         return file.read().split(',')
 
 def create_lines():
