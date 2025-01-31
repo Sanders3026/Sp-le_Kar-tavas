@@ -12,7 +12,7 @@ trys = 0
 word = ''
 difficulty = 0
 keys = ["QWERTYUIOP", "ASDFGHJKL", "ZXCVBNM"]
-garie=False
+garie = False
 pressed_keys = set()
 
 logs = Tk()
@@ -20,12 +20,11 @@ screen_width = logs.winfo_screenwidth()
 screen_height = logs.winfo_screenheight()
 
 if sys.platform == "darwin":  # macOS
-    logs.geometry("600x600")
+    logs.geometry("1000x800")
 elif sys.platform == "win32":  # Windows
-    logs.geometry('600x600')
+    logs.geometry(f"{int(screen_width * 0.6)}x{int(screen_height * 0.8)}")
 logs.title("Karātavas")
 logs.configure(bg='gray')
-
 
 start_frame = Frame(logs, bg='gray')
 game_frame = Frame(logs, bg='white')
@@ -40,7 +39,7 @@ a.pack()
 def draw_base():
     a.create_line(400, 100, 400, 400, fill="black", width=5)
     a.create_line(400, 100, 275, 100, fill="black", width=5)
-    
+
 hangman_parts = [
     lambda:  a.create_line(275, 100, 275, 150, fill="black", width=5),
     lambda: a.create_oval(260, 160, 290, 185, fill="black", outline="black", width=20),
@@ -67,7 +66,7 @@ def difficulty_select(x):
 
 def read_words():
     file_path = {1: easy_words, 2: normal_words, 3: hard_words}.get(difficulty, easy_words)
-    with open(file_path, 'r',encoding='utf-8') as file:
+    with open(file_path, 'r', encoding='utf-8') as file:
         return file.read().split(',')
 
 def create_lines():
@@ -75,22 +74,16 @@ def create_lines():
     word = random.choice(read_words())
     word_letters = ['_'] * len(word)
     Lines = Label(game_frame, text=" ".join(word_letters), font=("Arial", 35, 'bold'), fg='red', bg="white")
-    Lines.pack(pady=20)
 
 def switch_game_screen():
     global trys
-    
-
-    if sys.platform == "darwin":  # macOS
-        logs.geometry("1000x800")
-    elif sys.platform == "win32":  # Windows
-        logs.geometry(f"{int(screen_width * 0.6)}x{int(screen_height * 0.8)}")
     trys = 0
     draw_base()
-    create_lines()
     difficulty_select_frame.pack_forget()
     game_frame.pack(fill="both", expand=True)
     create_keyboard(keyboard_frame)
+    create_lines()
+    Lines.pack()
 
 def switch_difficulty_screen():
     for widget in win_frame.winfo_children():
@@ -98,11 +91,6 @@ def switch_difficulty_screen():
     for widget in lose_frame.winfo_children():
         widget.destroy()
 
-
-    if sys.platform == "darwin":  # macOS
-        logs.geometry("500x500")
-    elif sys.platform == "win32":  # Windows
-        logs.geometry('750x600')
     start_frame.pack_forget()
     difficulty_select_frame.pack(fill="both", expand=True)
 
@@ -155,7 +143,7 @@ def letter_pressed(letter, button):
         draw_next_part()
 
 def garie_burti():
-    global keys,garie,pressed_keys
+    global keys, garie, pressed_keys
     if not garie:
         keys = ["QWĒRTYŪĪOP", "ĀŠDFĢHJĶĻ", "ŽXČVBŅM"]
     else:
@@ -164,28 +152,38 @@ def garie_burti():
     for widget in keyboard_frame.winfo_children():
         widget.destroy()
     create_keyboard(keyboard_frame)
+
 def create_keyboard(frame):
     global keys
-    for row_index, row in enumerate(keys):
-        for col_index, letter in enumerate(row):
-            btn = Button(frame, text=letter, font=("Arial", 14, "bold"), width=4, height=2,
+    for row in keys:
+        row_frame = Frame(frame, bg='white')
+        row_frame.pack(fill='x', expand=True, pady=2)
+        inner_frame = Frame(row_frame, bg='white')
+        inner_frame.pack(expand=True)
+        for letter in row:
+            btn = Button(inner_frame, text=letter, font=("Arial", 14, "bold"), width=4, height=2,
                          bg="white", fg="black", activebackground="gray", activeforeground="white")
             btn.config(command=lambda l=letter, b=btn: letter_pressed(l, b))
-            if letter.lower() in pressed_keys:  
+            if letter.lower() in pressed_keys:
                 btn.config(state=DISABLED)
-            btn.grid(row=row_index, column=col_index, padx=3, pady=5)
-    long_letters=Button(frame, text="Garie Burti", font=("Arial", 14, "bold"), width=8, height=2,command=garie_burti).grid(row=2, column=7,columnspan=2)
+            btn.pack(side='left', padx=3)
+    row_frame = Frame(frame, bg='white')
+    row_frame.pack(fill='x', expand=True, pady=2)
+    inner_frame = Frame(row_frame, bg='white')
+    inner_frame.pack(expand=True)
+    Button(inner_frame, text="Garie Burti", font=("Arial", 14, "bold"), width=8, height=2, command=garie_burti).pack(side='left', padx=3)
 
-#Start screen widgets
+# Start screen widgets
 Stat_Label = Label(start_frame, text="★ Karātavas ★", font=("Times New Roman", 50, "bold italic"), fg='gold', bg='black')
-Stat_Label.place(x=300, y=50, anchor='center')
-Button(start_frame, text="⚡ Spēlēt ⚡", font=("Impact", 30), fg='cyan', bg='black', command=switch_difficulty_screen).place(x=300, y=200, anchor='center')
+Stat_Label.place(relx=0.5, rely=0.3, anchor='center')  # Adjusted to make it more centered
+Button(start_frame, text="⚡ Spēlēt ⚡", font=("Impact", 30), fg='cyan', bg='black', command=switch_difficulty_screen).place(relx=0.5, rely=0.5, anchor='center')  # Adjusted to be centered
 
-# Difficulty Selection
-Label(difficulty_select_frame, text="Izvēlies grūtības līmeni", font=("Arial", 28, "bold"), fg='white', bg='darkblue', pady=20, padx=40, relief=RIDGE, bd=5).grid(row=0, column=0, pady=50, padx=30, columnspan=3)
-Button(difficulty_select_frame, text="Viegls", font=("Arial", 22), bg='#4CAF50', command=lambda: difficulty_select(1)).grid(row=1, column=0, padx=20)
-Button(difficulty_select_frame, text="Normāls", font=("Arial", 22), bg='#FF9800', command=lambda: difficulty_select(2)).grid(row=1, column=1, padx=20)
-Button(difficulty_select_frame, text="Grūts", font=("Arial", 22), bg='#F44336', command=lambda: difficulty_select(3)).grid(row=1, column=2, padx=20)
+# Difficulty Selection screen widgets
+Label(difficulty_select_frame, text="Izvēlies grūtības līmeni", font=("Arial", 28, "bold"), fg='white', bg='darkblue', pady=20, padx=40, relief=RIDGE, bd=5).place(relx=0.5, rely=0.2, anchor='center')  # Centered the label
+
+Button(difficulty_select_frame, text="Viegls", font=("Arial", 22), bg='#4CAF50', command=lambda: difficulty_select(1)).place(relx=0.5, rely=0.4, anchor='center')  # Centered the button
+Button(difficulty_select_frame, text="Normāls", font=("Arial", 22), bg='#FF9800', command=lambda: difficulty_select(2)).place(relx=0.5, rely=0.5, anchor='center')  # Centered the button
+Button(difficulty_select_frame, text="Grūts", font=("Arial", 22), bg='#F44336', command=lambda: difficulty_select(3)).place(relx=0.5, rely=0.6, anchor='center')  # Centered the button
 
 start_frame.pack(fill="both", expand=True)
 keyboard_frame = Frame(game_frame, bg="white")
