@@ -22,7 +22,7 @@ screen_height = logs.winfo_screenheight()
 if sys.platform == "darwin":  # macOS
     logs.geometry("600x600")
 elif sys.platform == "win32":  # Windows
-    logs.geometry(f"{int(screen_width * 0.6)}x{int(screen_height * 0.8)}")
+    logs.geometry('600x600')
 logs.title("Karātavas")
 logs.configure(bg='gray')
 
@@ -102,7 +102,7 @@ def switch_difficulty_screen():
     if sys.platform == "darwin":  # macOS
         logs.geometry("600x600")
     elif sys.platform == "win32":  # Windows
-        logs.geometry('750x600')
+        logs.geometry(f"{int(screen_width * 0.6)}x{int(screen_height * 0.8)}")
     start_frame.pack_forget()
     difficulty_select_frame.pack(fill="both", expand=True)
 
