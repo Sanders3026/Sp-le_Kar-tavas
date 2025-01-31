@@ -100,7 +100,7 @@ def switch_difficulty_screen():
 
 
     if sys.platform == "darwin":  # macOS
-        logs.geometry("600x600")
+        logs.geometry("500x500")
     elif sys.platform == "win32":  # Windows
         logs.geometry('750x600')
     start_frame.pack_forget()
@@ -182,7 +182,7 @@ Stat_Label.place(x=300, y=50, anchor='center')
 Button(start_frame, text="⚡ Spēlēt ⚡", font=("Impact", 30), fg='cyan', bg='black', command=switch_difficulty_screen).place(x=300, y=200, anchor='center')
 
 # Difficulty Selection
-Label(difficulty_select_frame, text="Izvēlies grūtības līmeni", font=("Arial", 24, "bold"), fg='white', bg='darkblue').grid(row=0, column=1, pady=125,padx=30)
+Label(difficulty_select_frame, text="Izvēlies grūtības līmeni", font=("Arial", 28, "bold"), fg='white', bg='darkblue', pady=20, padx=40, relief=RIDGE, bd=5).grid(row=0, column=0, pady=50, padx=30, columnspan=3)
 Button(difficulty_select_frame, text="Viegls", font=("Arial", 22), bg='#4CAF50', command=lambda: difficulty_select(1)).grid(row=1, column=0, padx=20)
 Button(difficulty_select_frame, text="Normāls", font=("Arial", 22), bg='#FF9800', command=lambda: difficulty_select(2)).grid(row=1, column=1, padx=20)
 Button(difficulty_select_frame, text="Grūts", font=("Arial", 22), bg='#F44336', command=lambda: difficulty_select(3)).grid(row=1, column=2, padx=20)
