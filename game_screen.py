@@ -34,8 +34,6 @@ def draw_base():
     a.create_line(400, 100, 400, 400, fill="black", width=5)
     a.create_line(400, 100, 275, 100, fill="black", width=5)
     
-
-
 hangman_parts = [
     lambda:  a.create_line(275, 100, 275, 150, fill="black", width=5),
     lambda: a.create_oval(260, 160, 290, 185, fill="black", outline="black", width=20),
@@ -85,6 +83,8 @@ def switch_game_screen():
 def switch_difficulty_screen():
     for widget in win_frame.winfo_children():
         widget.destroy()
+    for widget in lose_frame.winfo_children():
+        widget.destroy()
     logs.geometry("600x600")
     start_frame.pack_forget()
     difficulty_select_frame.pack(fill="both", expand=True)
@@ -113,12 +113,14 @@ def play_again():
     a.delete("all")
     pressed_keys = set() 
     win_frame.pack_forget()
+    lose_frame.pack_forget()
     game_frame.pack_forget()
     Lines.destroy()
-    switch_difficulty_screen()
     keyboard_frame.pack_forget()  
     create_keyboard(keyboard_frame)  
-    keyboard_frame.pack(pady=100, side='bottom')   
+    keyboard_frame.pack(pady=100, side='bottom')
+    difficulty_select_frame.pack_forget()
+    switch_difficulty_screen()
 
 def letter_pressed(letter, button):
     button.config(state=DISABLED)
@@ -164,9 +166,9 @@ Button(start_frame, text="⚡ Spēlēt ⚡", font=("Impact", 30), fg='cyan', bg=
 
 # Difficulty Selection
 Label(difficulty_select_frame, text="Izvēlies grūtības līmeni", font=("Arial", 24, "bold"), fg='white', bg='darkblue').grid(row=0, column=1, pady=125,padx=30)
-Button(difficulty_select_frame, text="Viegls", font=("Arial", 22), fg='white', bg='#4CAF50', command=lambda: difficulty_select(1)).grid(row=1, column=0, padx=20)
-Button(difficulty_select_frame, text="Normāls", font=("Arial", 22), fg='white', bg='#FF9800', command=lambda: difficulty_select(2)).grid(row=1, column=1, padx=20)
-Button(difficulty_select_frame, text="Grūts", font=("Arial", 22), fg='white', bg='#F44336', command=lambda: difficulty_select(3)).grid(row=1, column=2, padx=20)
+Button(difficulty_select_frame, text="Viegls", font=("Arial", 22), bg='#4CAF50', command=lambda: difficulty_select(1)).grid(row=1, column=0, padx=20)
+Button(difficulty_select_frame, text="Normāls", font=("Arial", 22), bg='#FF9800', command=lambda: difficulty_select(2)).grid(row=1, column=1, padx=20)
+Button(difficulty_select_frame, text="Grūts", font=("Arial", 22), bg='#F44336', command=lambda: difficulty_select(3)).grid(row=1, column=2, padx=20)
 
 start_frame.pack(fill="both", expand=True)
 keyboard_frame = Frame(game_frame, bg="white")
