@@ -17,7 +17,7 @@ pressed_keys = set()
 COLORS = {
     "background": "#2E294E",
     "accent": "red",
-    "primary": "white",
+    "primary": "#C4B7CB",
     "secondary": "#3F88C5",
     "text": "#FFFFFF",
     "disabled": "#6C757D"
