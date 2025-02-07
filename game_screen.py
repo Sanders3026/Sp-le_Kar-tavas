@@ -5,7 +5,7 @@ import sys
 easy_words = "easy.txt"
 normal_words = "normal.txt"
 hard_words = "hard.txt"
-# Globālās mainīgās
+# Globālie mainīgie
 word_letters = []
 trys = 0
 word = ''
@@ -13,16 +13,16 @@ difficulty = 0
 keys = ["QWERTYUIOP", "ASDFGHJKL", "ZXCVBNM"]
 garie = False
 pressed_keys = set()
-# Krāsu shēma
+
 COLORS = {
     "background": "#2E294E",
-    "accent": "#EED5C7",
-    "primary": "#C4B7CB",
+    "accent": "red",
+    "primary": "white",
     "secondary": "#3F88C5",
     "text": "#FFFFFF",
     "disabled": "#6C757D"
 }
-# Loga inicializācija
+
 logs = Tk()
 screen_width = logs.winfo_screenwidth()
 screen_height = logs.winfo_screenheight()
@@ -116,10 +116,8 @@ def play_again():
     lose_frame.pack_forget()
     game_frame.pack_forget()
     Lines.destroy()
-    # Atkārtoti izveidojam klaviatūru
     keyboard_frame = Frame(game_frame, bg=COLORS["background"])
     keyboard_frame.pack(pady=20, side='bottom')
-    # Pārslēdzamies uz sākuma ekrānu
     switch_difficulty_screen()
 def letter_pressed(letter, button):
     button.config(state=DISABLED)
